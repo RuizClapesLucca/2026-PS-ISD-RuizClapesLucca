@@ -1,0 +1,5 @@
+body{font-family:Arial,Helvetica,sans-serif;line-height:1.5;margin:24px;background:#fff}
+pre{background:#f5f5f5;padding:12px;border-radius:6px;overflow:auto}
+img{max-width:100%;height:auto}
+.large-img{display:block;max-width:1000px;width:100%;height:auto;margin:16px auto;border-radius:6px}
+.hint{background:#eef;padding:8px;border-radius:6px}
