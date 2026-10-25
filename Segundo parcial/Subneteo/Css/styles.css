@@ -70,6 +70,33 @@ h2 { font-size: 1.2rem; margin: 0 0 16px; }
   gap: 16px;
   align-items: flex-end;
 }
+fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  flex: 1 1 320px;
+  min-width: 0;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+}
+fieldset legend {
+  padding: 0 6px;
+  color: var(--suave);
+  font-size: 0.85rem;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 label { display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; color: var(--suave); }
 input, select {
   font: inherit;
@@ -97,6 +124,7 @@ button.quitar {
 }
 
 .requerimientos { flex-basis: 100%; }
+.requerimientos #vlsm-agregar { margin-top: 8px; }
 .req-titulo, .req-fila {
   display: grid;
   grid-template-columns: 1fr 140px 40px;

@@ -1,91 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejemplo de subneteo</title>
+    <title>Calculadora de Subneteo IPv4</title>
     <link rel="stylesheet" href="Css/styles.css">
-    <script src="./JS/subneteo.js" defer></script>
+    <script src="JS/subneteo.js" defer></script>
+    <script src="JS/app.js" defer></script>
 </head>
 <body>
     <header class="encabezado">
-        <h1>Caclculadora de subneteo TPV4</h1>
-        <p>Ejemplo de calculadora para subnetear redes en IPV4</p>
+        <h1>Calculadora de Subneteo IPv4</h1>
+        <p>Herramientas para convertir y dividir redes IPv4</p>
     </header>
+
     <nav class="pestanas" role="tablist">
-        <button class="pestana activa" data-panel="panel-binario" role="tab">Decimal -- Binario</button>
-        <button class="pestana" data-panel="panel-flsm" role="tab">DFLSM (subredes iguales)</button>
-        <button class="pestana" data-panel="panel-vlsm" role="tab">VLSM (a la medida)</button>
-        <button class="pestana" data-panel="panel-ip" role="tab">¿A que red pertenece?</button>
+        <button class="pestana activa" id="tab-binario" data-panel="panel-binario"
+                aria-controls="panel-binario" aria-selected="true" role="tab">
+            Conversor decimal/binario
+        </button>
+        <button class="pestana" id="tab-flsm" data-panel="panel-flsm"
+                aria-controls="panel-flsm" aria-selected="false" role="tab">
+            Subredes FLSM
+        </button>
+        <button class="pestana" id="tab-vlsm" data-panel="panel-vlsm"
+                aria-controls="panel-vlsm" aria-selected="false" role="tab">
+            Subredes VLSM
+        </button>
+        <button class="pestana" id="tab-ip" data-panel="panel-ip"
+                aria-controls="panel-ip" aria-selected="false" role="tab">
+            Analizar una dirección IP
+        </button>
     </nav>
 
     <main>
-        <section id="panel-binario" class="panel activo">
-            <h2>COnertir un octeto o una IP a Binario</h2>
-            <form id="bin-entrada" class="formulario">
-                <label for="">Numero (0-255) o IP completa</label>
-                <input type="text" id="bin-entrada" value="192.168.60.0" autocomplete="off">
+        <section id="panel-binario" class="panel activo" role="tabpanel"
+                 aria-labelledby="tab-binario">
+            <h2>Convertir un octeto o una IP a binario</h2>
+
+            <form id="form-binario" class="formulario">
+                <fieldset>
+                    <legend>Número (0 - 255) o IP completa</legend>
+                    <label for="bin-entrada" class="sr-only">Entrada decimal</label>
+                    <input type="text" id="bin-entrada"
+                           value="192.168.50.0" autocomplete="off" required>
+                </fieldset>
                 <button type="submit">Convertir</button>
             </form>
+
             <div id="bin-resultado"></div>
         </section>
 
-        <section id="panel-flsm" class="panel">
+        <section id="panel-flsm" class="panel" role="tabpanel"
+                 aria-labelledby="tab-flsm">
             <h2>Dividir una red en subredes del mismo tamaño</h2>
+
             <form id="form-flsm" class="formulario">
-                <label>Prefijo o mascara</label>
-                <input type="text" id="flsm-prefijo" value="/8" autocomplete="off">
-                <label>Red base</label>
-                <input type="text" id="flsm-red" value="10.0.0.1" autocomplete="off">
-                <label>Calcular por:
-                    <select id="flsm-modo">
-                        <option value="subredes">Numero de subredes</option>
-                        <option value="hostPorSubred">Host por subred</option>
-                    </select>
-                </label>
-                <label>Cantidad
-                    <input type="number" min="1" value="16" id="flsm-cantidad">
-                </label>
-                <button type="submit">Subnetear</button>
+                <fieldset>
+                    <legend>Parámetros de la red</legend>
+                    <label for="flsm-prefijo">
+                        Prefijo o máscara
+                        <input type="text" id="flsm-prefijo" value="/8" required>
+                    </label>
+
+                    <label for="flsm-red">
+                        Red base
+                        <input type="text" id="flsm-red" value="10.0.0.0" required>
+                    </label>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Objetivo del cálculo</legend>
+                    <label for="flsm-modo">
+                        Calcular por
+                        <select id="flsm-modo">
+                            <option value="subredes">Número de subredes</option>
+                            <option value="hostsPorSubred">Hosts por subred</option>
+                        </select>
+                    </label>
+
+                    <label for="flsm-cantidad">
+                        Cantidad
+                        <input type="number" id="flsm-cantidad"
+                               min="1" value="16" required>
+                    </label>
+                </fieldset>
+
+                <button type="submit">Calcular subredes</button>
             </form>
-            <div id="flsm-resultado" ></div>
+
+            <div id="flsm-resultado"></div>
         </section>
 
-        <section id="panel-vlsm" class="panel">
-            <h2>Ajustar a cada area el bloque justo a lo que necesite</h2>
+        <section id="panel-vlsm" class="panel" role="tabpanel"
+                 aria-labelledby="tab-vlsm">
+            <h2>Ajustar cada área al bloque que necesita</h2>
+
             <form id="form-vlsm" class="formulario">
-                <label>Prefijo o mascara</label>
-                <input type="text" id="flsm-prefijo" value="/24" autocomplete="off">
-                <label>Red base</label>
-                <input type="text" id="flsm-red" value="192.168.50.0" autocomplete="off">
-                <div class="requerimientos">
-                    <div class="req titulo">
-                        <span>Area/subred</span><span>Hosts</span>
-                    </div>
-                    <div class="vlsm-filas">
+                <fieldset>
+                    <legend>Red de partida</legend>
+                    <label for="vlsm-prefijo">
+                        Prefijo o máscara
+                        <input type="text" id="vlsm-prefijo" value="/24" required>
+                    </label>
 
-                    </div>
-                    <button type="button" id="vlsm-agregar" class="secundario">Agregar subred</button>
+                    <label for="vlsm-red">
+                        Red base
+                        <input type="text" id="vlsm-red"
+                               value="192.168.50.0" required>
+                    </label>
+                </fieldset>
 
-                </div>
-                <button type="submit">Subnetear</button>
+                <fieldset class="requerimientos">
+                    <legend>Necesidades de cada subred</legend>
+                    <div class="req-titulo">
+                        <span>Área/subred</span>
+                        <span>Hosts</span>
+                        <span></span>
+                    </div>
+
+                    <div id="vlsm-filas"></div>
+
+                    <button type="button" id="vlsm-agregar" class="secundario">
+                        Añadir otra subred
+                    </button>
+                </fieldset>
+
+                <button type="submit">Calcular distribución</button>
             </form>
+
             <div id="vlsm-resultado"></div>
         </section>
 
-        <section id="panel-ip" class-panel>
-            <h2>Encontrar la red, el rando y el broadcast de una IP</h2>
-            <form id="form-ip" class="fromulario">
-                <label>Direccion IP
-                    <input type="text" id="ip-dir" value="10.28.90.92" autocomplete="off">
-                </label>
-                <label>Prefijo o Mascara
-                    <input type="text" id="ip-prefijo" value="/12" a>
-                </label>
-                <button type="submit">Analizar</button>
+        <section id="panel-ip" class="panel" role="tabpanel"
+                 aria-labelledby="tab-ip">
+            <h2>Encontrar la red, el rango y el broadcast de una IP</h2>
+
+            <form id="form-ip" class="formulario">
+                <fieldset>
+                    <legend>Datos que deseas analizar</legend>
+                    <label for="ip-dir">
+                        Dirección IP
+                        <input type="text" id="ip-dir"
+                               value="10.28.90.92" required>
+                    </label>
+
+                    <label for="ip-prefijo">
+                        Prefijo o máscara
+                        <input type="text" id="ip-prefijo" value="/12" required>
+                    </label>
+                </fieldset>
+
+                <button type="submit">Mostrar información</button>
             </form>
+
             <div id="ip-resultado"></div>
         </section>
     </main>
+
+    <footer>
+        Calculadora educativa de subneteo IPv4
+    </footer>
 </body>
 </html>
